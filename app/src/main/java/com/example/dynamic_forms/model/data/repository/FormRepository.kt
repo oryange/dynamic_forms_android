@@ -1,7 +1,7 @@
-package com.example.dynamic_forms.data.repository
+package com.example.dynamic_forms.model.data.repository
 
 import android.content.Context
-import com.example.dynamic_forms.data.entities.Form
+import com.example.dynamic_forms.model.data.entities.Form
 import com.google.gson.Gson
 
 class FormRepository(private val context: Context) {

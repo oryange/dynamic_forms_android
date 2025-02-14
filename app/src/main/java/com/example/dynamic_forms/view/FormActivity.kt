@@ -14,17 +14,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import com.example.dynamic_forms.R
-import com.example.dynamic_forms.data.entities.Field
-import com.example.dynamic_forms.data.entities.Form
-import com.example.dynamic_forms.data.entities.Option
-import com.example.dynamic_forms.data.repository.FormRepository
+import com.example.dynamic_forms.model.data.entities.Field
+import com.example.dynamic_forms.model.data.entities.Form
+import com.example.dynamic_forms.model.data.entities.Option
+import com.example.dynamic_forms.model.data.local.FormSharedPreferences
+import com.example.dynamic_forms.model.data.repository.FormRepository
 import com.example.dynamic_forms.util.FORM_KEY
 import com.example.dynamic_forms.util.FieldType
 import com.example.dynamic_forms.viewmodel.FormViewModel
 
 class FormActivity : AppCompatActivity() {
     private val viewModel: FormViewModel by viewModels {
-        FormFactory(FormRepository(this))
+        FormFactory(FormRepository(this), FormSharedPreferences(this))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +86,6 @@ class FormActivity : AppCompatActivity() {
         }
         layout.addView(view)
     }
-
 
     private fun createSectionTitle(htmlText: String): TextView {
         return TextView(this).apply {
