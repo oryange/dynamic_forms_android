@@ -1,4 +1,4 @@
-package com.example.dynamic_forms.data
+package com.example.dynamic_forms.data.entities
 
 data class Section(
     val title: String,
