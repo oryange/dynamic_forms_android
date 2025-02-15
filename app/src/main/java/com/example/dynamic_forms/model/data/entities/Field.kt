@@ -1,6 +1,6 @@
 package com.example.dynamic_forms.model.data.entities
 
-data class Field(
+internal data class Field(
     val type: String,
     val label: String,
     val name: String,

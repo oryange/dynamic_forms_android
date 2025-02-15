@@ -56,7 +56,6 @@ class FormActivity : AppCompatActivity() {
         }
     }
 
-
     private fun populateForm(layout: LinearLayout, form: Form) {
         form.fields.forEach { field ->
             addFieldToLayout(field, layout)

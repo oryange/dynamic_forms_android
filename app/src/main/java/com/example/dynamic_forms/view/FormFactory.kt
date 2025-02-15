@@ -6,7 +6,7 @@ import com.example.dynamic_forms.model.data.local.FormSharedPreferences
 import com.example.dynamic_forms.model.data.repository.FormRepository
 import com.example.dynamic_forms.viewmodel.FormViewModel
 
-class FormFactory(
+internal class FormFactory(
     private val formRepository: FormRepository,
     private val formSharedPreferences: FormSharedPreferences,
 ) :

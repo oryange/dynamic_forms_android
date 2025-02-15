@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.dynamic_forms.model.data.entities.Form
 import com.google.gson.Gson
 
-class FormRepository(private val context: Context) {
+internal class FormRepository(private val context: Context) {
     private fun loadJsonFromAssets(fileName: String): String {
         return context.assets.open(fileName).bufferedReader().use { it.readText() }
     }

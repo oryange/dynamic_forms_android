@@ -1,6 +1,6 @@
 package com.example.dynamic_forms.model.data.entities
 
-data class Section(
+internal data class Section(
     val title: String,
     val from: Int,
     val to: Int,
