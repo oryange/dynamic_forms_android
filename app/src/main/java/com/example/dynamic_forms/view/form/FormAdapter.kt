@@ -1,3 +1,5 @@
+package com.example.dynamic_forms.view.form
+
 import android.R
 import android.text.InputType
 import android.view.View
@@ -28,15 +30,14 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
     }
 
     private fun populateItemList() {
-        form.sections.forEach { section ->
-            if (itemList.none { it is Section && it.uuid == section.uuid }) {
-                itemList.add(section)
-            }
-        }
-
         form.fields.forEach { field ->
             if (itemList.none { it is Field && it.uuid == field.uuid }) {
                 itemList.add(field)
+            }
+        }
+        form.sections.forEach { section ->
+            if (itemList.none { it is Section && it.uuid == section.uuid }) {
+                itemList.add(section)
             }
         }
     }
@@ -68,8 +69,8 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
         val item = itemList[position]
         when (item) {
-            is Section -> holder.bindSection(item)
             is Field -> holder.bindField(item)
+            is Section -> holder.bindSection(item)
         }
     }
 

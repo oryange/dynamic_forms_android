@@ -1,4 +1,4 @@
-package com.example.dynamic_forms.view
+package com.example.dynamic_forms.view.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import com.example.dynamic_forms.databinding.ActivityHomeBinding
 import com.example.dynamic_forms.util.FORM_KEY
 import com.example.dynamic_forms.util.FORM_ONE
 import com.example.dynamic_forms.util.FORM_TWO
+import com.example.dynamic_forms.view.form.FormActivity
 
 class HomeActivity : AppCompatActivity() {
 
