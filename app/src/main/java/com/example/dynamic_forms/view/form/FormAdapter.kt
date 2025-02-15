@@ -87,6 +87,13 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
             val label = TextView(layout.context).apply {
                 text = field.label
                 textSize = 18f
+                setPadding(8, 8, 8, 8)
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = 16
+                }
             }
             layout.addView(label)
 
@@ -106,7 +113,16 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
 
             val title = TextView(layout.context).apply {
                 text = HtmlCompat.fromHtml(section.title, HtmlCompat.FROM_HTML_MODE_COMPACT)
-                textSize = 20f
+                textSize = 22f
+                setPadding(16, 16, 16, 16)
+                setBackgroundColor(0xFFEEEEEE.toInt()) // Cor de fundo sutil para seções
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = 32
+                    bottomMargin = 16
+                }
             }
             layout.addView(title)
         }
@@ -114,11 +130,25 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
         private fun createDescriptionView(description: String): TextView {
             return TextView(layout.context).apply {
                 text = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                textSize = 16f
+                setPadding(8, 8, 8, 8)
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             }
         }
 
         private fun createDropdownView(field: Field, options: List<Option>?): Spinner {
-            val spinner = Spinner(layout.context)
+            val spinner = Spinner(layout.context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = 16
+                }
+            }
+
             val optionLabels = options?.map { it.label } ?: listOf()
             val adapter = ArrayAdapter(
                 layout.context,
@@ -129,15 +159,9 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
             spinner.setSelection(viewModel.getDropdownValue(field.uuid))
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     viewModel.saveDropdownValue(fieldId = field.uuid, selectedIndex = position)
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
@@ -145,12 +169,19 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
         }
 
         private fun createNumberInput(field: Field): EditText {
-            val inputValue =
-                viewModel.getIntInputValue(field.uuid).takeIf { it != 0 }?.toString() ?: ""
+            val inputValue = viewModel.getIntInputValue(field.uuid).takeIf { it != 0 }?.toString() ?: ""
             return EditText(layout.context).apply {
                 inputType = InputType.TYPE_CLASS_NUMBER
                 hint = field.label
                 setText(inputValue)
+                setPadding(16, 16, 16, 16)
+                setBackgroundResource(android.R.drawable.edit_text)
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = 16
+                }
 
                 addTextChangedListener { editable ->
                     editable.toString().toIntOrNull()?.let { value ->
@@ -164,6 +195,14 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
             return EditText(layout.context).apply {
                 hint = field.label
                 setText(viewModel.getInputValue(field.uuid))
+                setPadding(16, 16, 16, 16)
+                setBackgroundResource(android.R.drawable.edit_text)
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = 16
+                }
 
                 addTextChangedListener { editable ->
                     viewModel.saveInputValue(fieldId = field.uuid, value = editable.toString())
@@ -171,6 +210,7 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
             }
         }
     }
+
 
     private companion object {
         const val TYPE_DESCRIPTION = 0
