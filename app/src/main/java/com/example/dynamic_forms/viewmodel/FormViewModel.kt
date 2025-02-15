@@ -33,4 +33,32 @@ internal class FormViewModel(
             formSharedPreferences.saveFormToCache(filename, form)
         }
     }
+
+    fun saveInputValue(fieldId: String, value: String) {
+        formSharedPreferences.saveStringInputValue(fieldId, value)
+    }
+
+    fun saveIntInputValue(fieldId: String, value: Int) {
+        formSharedPreferences.saveIntInputValue(fieldId, value)
+    }
+
+    fun saveDropdownValue(fieldId: String, selectedIndex: Int) {
+        formSharedPreferences.saveDropdownValue(fieldId, selectedIndex)
+    }
+
+    fun getInputValue(fieldId: String): String {
+        return formSharedPreferences.getStringInputValue(fieldId) ?: ""
+    }
+
+    fun getIntInputValue(fieldId: String): Int {
+        return formSharedPreferences.getIntInputValue(fieldId) ?: 0
+    }
+
+    fun getDropdownValue(fieldId: String): Int {
+        return formSharedPreferences.getDropdownValue(fieldId)
+    }
+
+    fun clearInputValues() {
+        formSharedPreferences.clearInputValues()
+    }
 }

@@ -18,11 +18,19 @@ internal class FormSharedPreferences(context: Context) : FormPreferences {
 
     override fun getFormToCache(filename: String) = sharedPreferences.getString(filename, null)
 
-    override fun saveInputValue(fieldId: String, value: String) {
+    override fun saveStringInputValue(fieldId: String, value: String) {
         editor.putString("input_$fieldId", value).apply()
     }
 
-    override fun getInputValue(fieldId: String): String? {
+    override fun getIntInputValue(fieldId: String): Int? {
+        return sharedPreferences.getInt("input_$fieldId", 0)
+    }
+
+    override fun saveIntInputValue(fieldId: String, value: Int) {
+        editor.putInt("input_$fieldId", value).apply()
+    }
+
+    override fun getStringInputValue(fieldId: String): String? {
         return sharedPreferences.getString("input_$fieldId", null)
     }
 
