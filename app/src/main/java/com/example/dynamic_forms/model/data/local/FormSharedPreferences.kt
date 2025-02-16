@@ -43,9 +43,11 @@ internal class FormSharedPreferences(context: Context) : FormPreferences {
     }
 
     override fun clearInputValues() {
-        val keysToRemove =
-            sharedPreferences.all.keys.filter { it.startsWith("input_") || it.startsWith("dropdown_") }
+        val keysToRemove = sharedPreferences.all.keys.filter {
+            it.startsWith("input_") || it.startsWith("dropdown_")
+        }
+
         keysToRemove.forEach { editor.remove(it) }
-        editor.apply()
+        editor.commit()
     }
 }

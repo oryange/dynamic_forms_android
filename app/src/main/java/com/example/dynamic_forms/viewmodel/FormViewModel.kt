@@ -58,7 +58,7 @@ internal class FormViewModel(
         return formSharedPreferences.getDropdownValue(fieldId)
     }
 
-    fun clearInputValues() {
+    fun clearForm() {
         formSharedPreferences.clearInputValues()
     }
 }

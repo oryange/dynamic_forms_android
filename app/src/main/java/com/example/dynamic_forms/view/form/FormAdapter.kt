@@ -159,9 +159,15 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
             spinner.setSelection(viewModel.getDropdownValue(field.uuid))
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     viewModel.saveDropdownValue(fieldId = field.uuid, selectedIndex = position)
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
@@ -169,7 +175,8 @@ internal class FormAdapter(private val form: Form, private val viewModel: FormVi
         }
 
         private fun createNumberInput(field: Field): EditText {
-            val inputValue = viewModel.getIntInputValue(field.uuid).takeIf { it != 0 }?.toString() ?: ""
+            val inputValue =
+                viewModel.getIntInputValue(field.uuid).takeIf { it != 0 }?.toString() ?: ""
             return EditText(layout.context).apply {
                 inputType = InputType.TYPE_CLASS_NUMBER
                 hint = field.label
