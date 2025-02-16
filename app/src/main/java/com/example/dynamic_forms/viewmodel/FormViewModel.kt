@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dynamic_forms.model.data.entities.Form
 import com.example.dynamic_forms.model.data.local.FormPreferences
-import com.example.dynamic_forms.model.data.repository.AssetFormRepository
+import com.example.dynamic_forms.model.data.repository.FormDataSource
 import com.example.dynamic_forms.util.FILE_FORM_ONE
 import com.example.dynamic_forms.util.FILE_FORM_TWO
 import com.example.dynamic_forms.util.FORM_ONE
 import com.google.gson.Gson
 
 internal class FormViewModel(
-    private val repository: AssetFormRepository,
+    private val repository: FormDataSource,
     private val formSharedPreferences: FormPreferences
 ) : ViewModel() {
 
