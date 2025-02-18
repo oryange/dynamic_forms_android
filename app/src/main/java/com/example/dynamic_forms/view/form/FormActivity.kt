@@ -20,6 +20,7 @@ class FormActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var title: TextView
     private lateinit var fab: FloatingActionButton
+    private lateinit var fabBack: FloatingActionButton
     private lateinit var adapter: FormAdapter
 
     private val viewModel: FormViewModel by viewModels {
@@ -41,12 +42,14 @@ class FormActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView)
         fab = findViewById(R.id.fab)
+        fabBack = findViewById(R.id.fab_back)
         title = findViewById(R.id.form_title)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun setupFab() {
         fab.setOnClickListener { clearForm() }
+        fabBack.setOnClickListener { finish() }
     }
 
     private fun setupTitle() {

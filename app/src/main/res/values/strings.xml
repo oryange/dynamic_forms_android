@@ -5,4 +5,5 @@
     <string name="choose_your_preferred_form">Choose your preferred form</string>
     <string name="form_entries">Form Entries</string>
     <string name="button_for_delete">button for delete</string>
+    <string name="the_list_is_currently_empty_click_add_to_include_new_items">The list is currently empty. Click \'Add\' to include new items.</string>
 </resources>

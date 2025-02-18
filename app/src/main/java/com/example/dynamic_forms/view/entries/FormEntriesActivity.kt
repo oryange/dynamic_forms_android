@@ -2,6 +2,7 @@ package com.example.dynamic_forms.view.entries
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,8 @@ class FormEntriesActivity : AppCompatActivity() {
     private lateinit var formSelected: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
+    private lateinit var fabBack: FloatingActionButton
+    private lateinit var textEmptyList: TextView
     private lateinit var adapter: FormEntriesAdapter
 
     private val viewModel: FormEntriesViewModel by viewModels {
@@ -46,6 +49,8 @@ class FormEntriesActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView)
         fab = findViewById(R.id.fab)
+        fabBack = findViewById(R.id.fab_back)
+        textEmptyList = findViewById(R.id.empty_list_message)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
@@ -53,11 +58,18 @@ class FormEntriesActivity : AppCompatActivity() {
         viewModel.formLiveData.observe(this) { form ->
             adapter = FormEntriesAdapter(formSelected, form, viewModel)
             recyclerView.adapter = adapter
+
+            if (form.fields.isEmpty()) {
+                textEmptyList.visibility = TextView.VISIBLE
+            } else {
+                textEmptyList.visibility = TextView.GONE
+            }
         }
     }
 
     private fun setupFab() {
         fab.setOnClickListener { onClickForm(formSelected) }
+        fabBack.setOnClickListener { finish() }
     }
 
     private fun onClickForm(form: String) {

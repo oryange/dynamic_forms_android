@@ -46,12 +46,11 @@ internal class FormSharedPreferences(context: Context) : FormPreferences {
 
     override fun clearInputValues(filename: String) {
         val keysToRemove = getAllInputValuesFromCache(filename).keys.filter {
-            it?.contains("${filename}_input_") == true || it.contains(
-                "${filename}_dropdown_"
-            )
+            it.contains("${filename}_input_") || it.contains("${filename}_dropdown_")
         }
 
         keysToRemove.forEach { editor.remove(it) }
-        editor.commit()
+        editor.apply()
     }
+
 }
