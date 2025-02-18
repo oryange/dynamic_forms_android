@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/form_title"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_2m"
         android:layout_marginBottom="@dimen/_2m"
         android:gravity="center"
-        tools:text="Form one"
+        android:text="@string/form_entries"
         android:theme="@style/fontTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,9 +26,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/button_for_delete"
-        android:src="@android:drawable/ic_menu_delete"
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:src="@android:drawable/ic_input_add" />
 </LinearLayout>

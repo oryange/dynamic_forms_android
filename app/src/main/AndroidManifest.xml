@@ -11,6 +11,10 @@
         android:theme="@style/Theme.Dynamic_forms"
         tools:targetApi="31">
         <activity
+            android:name=".view.entries.FormEntriesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Dynamic_forms" />
+        <activity
             android:name=".view.home.HomeActivity"
             android:exported="false"
             android:theme="@style/Theme.Dynamic_forms" />

@@ -18,33 +18,37 @@ internal class FormSharedPreferences(context: Context) : FormPreferences {
 
     override fun getFormToCache(filename: String) = sharedPreferences.getString(filename, null)
 
-    override fun saveStringInputValue(fieldId: String, value: String) {
-        editor.putString("input_$fieldId", value).apply()
+    override fun saveStringInputValue(filename: String, fieldId: String, value: String) {
+        editor.putString("${filename}_input_$fieldId", value).apply()
     }
 
-    override fun getIntInputValue(fieldId: String): Int? {
-        return sharedPreferences.getInt("input_$fieldId", 0)
+    override fun getIntInputValue(filename: String, fieldId: String): Int? {
+        return sharedPreferences.getInt("${filename}_input_$fieldId", 0)
     }
 
-    override fun saveIntInputValue(fieldId: String, value: Int) {
-        editor.putInt("input_$fieldId", value).apply()
+    override fun saveIntInputValue(filename: String, fieldId: String, value: Int) {
+        editor.putInt("${filename}_input_$fieldId", value).apply()
     }
 
-    override fun getStringInputValue(fieldId: String): String? {
-        return sharedPreferences.getString("input_$fieldId", null)
+    override fun getStringInputValue(filename: String, fieldId: String): String? {
+        return sharedPreferences.getString("${filename}_input_$fieldId", null)
     }
 
-    override fun saveDropdownValue(fieldId: String, selectedIndex: Int) {
-        editor.putInt("dropdown_$fieldId", selectedIndex).apply()
+    override fun saveDropdownValue(filename: String, fieldId: String, selectedIndex: Int) {
+        editor.putInt("${filename}_dropdown_$fieldId", selectedIndex).apply()
     }
 
-    override fun getDropdownValue(fieldId: String): Int {
-        return sharedPreferences.getInt("dropdown_$fieldId", 0)
+    override fun getDropdownValue(filename: String, fieldId: String): Int {
+        return sharedPreferences.getInt("${filename}_dropdown_$fieldId", 0)
     }
 
-    override fun clearInputValues() {
-        val keysToRemove = sharedPreferences.all.keys.filter {
-            it.startsWith("input_") || it.startsWith("dropdown_")
+    override fun getAllInputValuesFromCache(filename: String) = sharedPreferences.all
+
+    override fun clearInputValues(filename: String) {
+        val keysToRemove = getAllInputValuesFromCache(filename).keys.filter {
+            it?.contains("${filename}_input_") == true || it.contains(
+                "${filename}_dropdown_"
+            )
         }
 
         keysToRemove.forEach { editor.remove(it) }

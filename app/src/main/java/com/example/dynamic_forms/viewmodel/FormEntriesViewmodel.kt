@@ -8,38 +8,41 @@ import com.example.dynamic_forms.model.data.local.FormPreferences
 import com.example.dynamic_forms.model.data.repository.FormDataSource
 import com.google.gson.Gson
 
-internal class FormViewModel(
+internal class FormEntriesViewModel(
     private val repository: FormDataSource,
     private val formSharedPreferences: FormPreferences
 ) : ViewModel() {
-
     private val gson = Gson()
     private val _formLiveData = MutableLiveData<Form>()
     val formLiveData: LiveData<Form> get() = _formLiveData
 
-    fun getFormSelected(filename: String) {
+    private fun getAllInputValues(filename: String) =
+        formSharedPreferences.getAllInputValuesFromCache(filename)
+
+    fun getFilteredFormSelected(filename: String) {
         val fromCache = formSharedPreferences.getFormToCache(filename)
+        val allowedValues = getAllInputValues(filename)
 
-        if (fromCache != null) {
-            val form = gson.fromJson(fromCache, Form::class.java)
-            _formLiveData.postValue(form)
+        val form = if (fromCache != null) {
+            gson.fromJson(fromCache, Form::class.java)
         } else {
-            val form = repository.getForm(filename)
-            _formLiveData.postValue(form)
-            formSharedPreferences.saveFormToCache(filename, form)
+            repository.getForm(filename).also {
+                formSharedPreferences.saveFormToCache(filename, it)
+            }
         }
-    }
 
-    fun saveInputValue(filename: String, fieldId: String, value: String) {
-        formSharedPreferences.saveStringInputValue(filename, fieldId, value)
-    }
+        val filteredForm = form.copy(
+            fields = form.fields.filter { field ->
+                allowedValues?.keys?.contains("${filename}_input_${field.uuid}") == true || allowedValues?.keys?.contains(
+                    "${filename}_dropdown_${field.uuid}"
+                ) == true
+            },
+            sections = form.sections.filter { field ->
+                allowedValues?.keys?.contains("_${field.uuid}") == true
+            }
+        )
 
-    fun saveIntInputValue(filename: String, fieldId: String, value: Int) {
-        formSharedPreferences.saveIntInputValue(filename, fieldId, value)
-    }
-
-    fun saveDropdownValue(filename: String, fieldId: String, selectedIndex: Int) {
-        formSharedPreferences.saveDropdownValue(filename, fieldId, selectedIndex)
+        _formLiveData.postValue(filteredForm)
     }
 
     fun getInputValue(filename: String, fieldId: String): String {
@@ -52,9 +55,5 @@ internal class FormViewModel(
 
     fun getDropdownValue(filename: String, fieldId: String): Int {
         return formSharedPreferences.getDropdownValue(filename, fieldId)
-    }
-
-    fun clearForm(filename: String) {
-        formSharedPreferences.clearInputValues(filename)
     }
 }

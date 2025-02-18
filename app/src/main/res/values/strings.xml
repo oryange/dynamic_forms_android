@@ -3,4 +3,6 @@
     <string name="form_one">Form One</string>
     <string name="form_two">Form Two</string>
     <string name="choose_your_preferred_form">Choose your preferred form</string>
+    <string name="form_entries">Form Entries</string>
+    <string name="button_for_delete">button for delete</string>
 </resources>

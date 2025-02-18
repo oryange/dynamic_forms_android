@@ -1,31 +1,28 @@
-package com.example.dynamic_forms.view.form
+package com.example.dynamic_forms.view.entries
 
 import android.R
 import android.text.InputType
-import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dynamic_forms.model.data.entities.Field
 import com.example.dynamic_forms.model.data.entities.Form
 import com.example.dynamic_forms.model.data.entities.Option
 import com.example.dynamic_forms.model.data.entities.Section
 import com.example.dynamic_forms.util.FieldType
-import com.example.dynamic_forms.viewmodel.FormViewModel
+import com.example.dynamic_forms.viewmodel.FormEntriesViewModel
 
-internal class FormAdapter(
+internal class FormEntriesAdapter(
     private val filename: String,
     private val form: Form,
-    private val viewModel: FormViewModel
+    private val viewModel: FormEntriesViewModel
 ) :
-    RecyclerView.Adapter<FormAdapter.FormViewHolder>() {
+    RecyclerView.Adapter<FormEntriesAdapter.FormViewHolder>() {
     private val itemList: MutableList<Any> = mutableListOf()
 
     init {
@@ -166,23 +163,6 @@ internal class FormAdapter(
                 )
             )
 
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    viewModel.saveDropdownValue(
-                        filename = filename,
-                        fieldId = field.uuid,
-                        selectedIndex = position
-                    )
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {}
-            }
-
             return spinner
         }
 
@@ -203,15 +183,6 @@ internal class FormAdapter(
                     bottomMargin = 16
                 }
 
-                addTextChangedListener { editable ->
-                    editable.toString().toIntOrNull()?.let { value ->
-                        viewModel.saveIntInputValue(
-                            filename = filename,
-                            fieldId = field.uuid,
-                            value = value
-                        )
-                    }
-                }
             }
         }
 
@@ -226,14 +197,6 @@ internal class FormAdapter(
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
                     bottomMargin = 16
-                }
-
-                addTextChangedListener { editable ->
-                    viewModel.saveInputValue(
-                        filename = filename,
-                        fieldId = field.uuid,
-                        value = editable.toString()
-                    )
                 }
             }
         }
