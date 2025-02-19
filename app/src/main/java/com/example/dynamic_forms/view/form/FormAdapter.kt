@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
@@ -88,18 +88,34 @@ internal class FormAdapter(
         fun bindField(field: Field) {
             layout.removeAllViews()
 
+            val linearLayoutForField = LinearLayout(layout.context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(8, 8, 8, 8)
+            }
+
             val label = TextView(layout.context).apply {
                 text = field.label
                 textSize = 18f
                 setPadding(8, 8, 8, 8)
                 layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    0,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
+                    weight = 1f
                     bottomMargin = 16
                 }
             }
-            layout.addView(label)
+
+            val removeButton = buttonRemoveItem(field = field).apply {
+                layoutParams = LinearLayout.LayoutParams(48, 48).apply {
+                    marginStart = 16
+                    topMargin = 8
+                }
+            }
+
+            linearLayoutForField.addView(label)
+            linearLayoutForField.addView(removeButton)
+            layout.addView(linearLayoutForField)
 
             val view = when (viewType) {
                 TYPE_DESCRIPTION -> createDescriptionView(field.label)
@@ -112,8 +128,14 @@ internal class FormAdapter(
             layout.addView(view)
         }
 
+
         fun bindSection(section: Section) {
             layout.removeAllViews()
+
+            val linearLayoutForSection = LinearLayout(layout.context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(8, 8, 8, 8)
+            }
 
             val title = TextView(layout.context).apply {
                 text = HtmlCompat.fromHtml(section.title, HtmlCompat.FROM_HTML_MODE_COMPACT)
@@ -121,15 +143,27 @@ internal class FormAdapter(
                 setPadding(16, 16, 16, 16)
                 setBackgroundColor(0xFFEEEEEE.toInt())
                 layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    0,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
+                    weight = 1f
                     topMargin = 32
                     bottomMargin = 16
                 }
             }
-            layout.addView(title)
+
+            val removeButton = buttonRemoveItem(section = section).apply {
+                layoutParams = LinearLayout.LayoutParams(48, 48).apply {
+                    marginStart = 16
+                    topMargin = 8
+                }
+            }
+
+            linearLayoutForSection.addView(title)
+            linearLayoutForSection.addView(removeButton)
+            layout.addView(linearLayoutForSection)
         }
+
 
         private fun createDescriptionView(description: String): TextView {
             return TextView(layout.context).apply {
@@ -234,6 +268,23 @@ internal class FormAdapter(
                         filename = filename,
                         fieldId = field.uuid,
                         value = editable.toString()
+                    )
+                }
+            }
+        }
+
+        private fun buttonRemoveItem(field: Field? = null, section: Section? = null): ImageButton {
+            return ImageButton(layout.context).apply {
+                layoutParams = LinearLayout.LayoutParams(48, 48).apply {
+                    marginStart = 16
+                }
+                setImageResource(R.drawable.ic_delete)
+                setColorFilter(0xFF888888.toInt())
+                setOnClickListener {
+                    viewModel.removeFieldToFormInCache(
+                        filename = filename,
+                        removeField = field,
+                        removeSection = section
                     )
                 }
             }
