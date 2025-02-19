@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="field_types">
+        <item>text</item>
+        <item>description</item>
+        <item>textarea</item>
+        <item>file</item>
+        <item>email</item>
+        <item>section</item>
+    </string-array>
+</resources>

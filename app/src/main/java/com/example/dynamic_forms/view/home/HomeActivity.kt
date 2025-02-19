@@ -7,7 +7,7 @@ import com.example.dynamic_forms.databinding.ActivityHomeBinding
 import com.example.dynamic_forms.util.FILE_FORM_ONE
 import com.example.dynamic_forms.util.FILE_FORM_TWO
 import com.example.dynamic_forms.util.FORM_KEY
-import com.example.dynamic_forms.view.entries.FormEntriesActivity
+import com.example.dynamic_forms.view.form.FormActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun onClickForm(form: String) {
-        intent = Intent(this, FormEntriesActivity::class.java)
+        intent = Intent(this, FormActivity::class.java)
         intent.putExtra(FORM_KEY, form)
         startActivity(intent)
     }

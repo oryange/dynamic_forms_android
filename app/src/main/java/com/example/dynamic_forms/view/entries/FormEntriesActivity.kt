@@ -1,80 +1,82 @@
 package com.example.dynamic_forms.view.entries
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.dynamic_forms.R
+import com.example.dynamic_forms.model.data.entities.Field
+import com.example.dynamic_forms.model.data.entities.Section
 import com.example.dynamic_forms.model.data.local.FormSharedPreferences
-import com.example.dynamic_forms.model.data.repository.AssetFormRepository
 import com.example.dynamic_forms.util.FORM_KEY
-import com.example.dynamic_forms.view.form.FormActivity
 import com.example.dynamic_forms.viewmodel.FormEntriesFactory
 import com.example.dynamic_forms.viewmodel.FormEntriesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.UUID
 
-class FormEntriesActivity : AppCompatActivity() {
+internal class FormEntriesActivity : AppCompatActivity() {
     private lateinit var formSelected: String
-    private lateinit var recyclerView: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var fabBack: FloatingActionButton
-    private lateinit var textEmptyList: TextView
-    private lateinit var adapter: FormEntriesAdapter
+    private lateinit var fieldTypeSpinner: Spinner
+    private lateinit var fieldLabel: EditText
+    private lateinit var fieldName: EditText
+    private lateinit var fieldRequired: CheckBox
+    private lateinit var addButton: Button
 
     private val viewModel: FormEntriesViewModel by viewModels {
-        FormEntriesFactory(AssetFormRepository(this), FormSharedPreferences(this))
+        FormEntriesFactory(FormSharedPreferences(this))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_entries)
 
-        setupRecyclerView()
+        setupView()
         setupFab()
-        setupObservers()
+        setupAddButton()
 
         formSelected = intent.getStringExtra(FORM_KEY).toString()
-        viewModel.getFilteredFormSelected(formSelected)
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getFilteredFormSelected(formSelected)
-    }
-
-    private fun setupRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerView)
+    private fun setupView() {
         fab = findViewById(R.id.fab)
         fabBack = findViewById(R.id.fab_back)
-        textEmptyList = findViewById(R.id.empty_list_message)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        fieldTypeSpinner = findViewById(R.id.field_type)
+        fieldLabel = findViewById(R.id.field_label)
+        fieldName = findViewById(R.id.field_name)
+        fieldRequired = findViewById(R.id.field_required)
+        addButton = findViewById(R.id.btn_add_field)
     }
 
-    private fun setupObservers() {
-        viewModel.formLiveData.observe(this) { form ->
-            adapter = FormEntriesAdapter(formSelected, form, viewModel)
-            recyclerView.adapter = adapter
+    private fun setupAddButton() {
+        addButton.setOnClickListener {
+            val type =
+                fieldTypeSpinner.selectedItem.toString()
+            val label = fieldLabel.text.toString()
+            val name = fieldName.text.toString()
+            val required = fieldRequired.isChecked
+// todo() implement this:
+//            val newSection = Section(
+//
+//            )
+            val newField = Field(
+                type = type,
+                label = label,
+                name = name,
+                required = required,
+                uuid = "${formSelected}_input_${UUID.randomUUID()}",
+                options = null
+            )
 
-            if (form.fields.isEmpty()) {
-                textEmptyList.visibility = TextView.VISIBLE
-            } else {
-                textEmptyList.visibility = TextView.GONE
-            }
+            viewModel.addFieldToFormInCache(formSelected, newField)
         }
     }
 
     private fun setupFab() {
-        fab.setOnClickListener { onClickForm(formSelected) }
         fabBack.setOnClickListener { finish() }
-    }
-
-    private fun onClickForm(form: String) {
-        intent = Intent(this, FormActivity::class.java)
-        intent.putExtra(FORM_KEY, form)
-        startActivity(intent)
     }
 }
