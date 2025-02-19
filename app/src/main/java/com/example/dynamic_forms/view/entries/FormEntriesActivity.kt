@@ -28,7 +28,6 @@ internal class FormEntriesActivity : AppCompatActivity() {
 
     private lateinit var fieldTypeSpinner: Spinner
     private lateinit var fieldLabel: EditText
-    private lateinit var fieldName: EditText
     private lateinit var fieldRequired: CheckBox
     private lateinit var addButton: Button
 
@@ -45,7 +44,6 @@ internal class FormEntriesActivity : AppCompatActivity() {
 
         fieldTypeSpinner = findViewById(R.id.field_type)
         fieldLabel = findViewById(R.id.field_label)
-        fieldName = findViewById(R.id.field_name)
         fieldRequired = findViewById(R.id.field_required)
         addButton = findViewById(R.id.btn_add_field)
     }
@@ -57,7 +55,7 @@ internal class FormEntriesActivity : AppCompatActivity() {
     private fun addFieldToForm() {
         val type = fieldTypeSpinner.selectedItem.toString()
         val label = fieldLabel.text.toString().trim()
-        val name = fieldName.text.toString().trim()
+        val name = fieldLabel.text.toString().trim()
         val required = fieldRequired.isChecked
 
         if (label.isEmpty() || name.isEmpty()) {

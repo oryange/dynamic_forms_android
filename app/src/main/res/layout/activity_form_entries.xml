@@ -4,100 +4,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/form_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2m"
-            android:layout_marginBottom="@dimen/_2m"
-            android:gravity="center"
-            android:theme="@style/fontTitle"
-            tools:text="Dynamic Form" />
+            android:orientation="vertical"
+            android:padding="8dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/type"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/form_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/fontTitle"
+                tools:text="Dynamic Form" />
 
-        <Spinner
-            android:id="@+id/field_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/array_types" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/select_one_type"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/label"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/field_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:entries="@array/array_types" />
 
-        <EditText
-            android:id="@+id/field_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_label"
-            android:inputType="text" />
+            <EditText
+                android:id="@+id/field_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:hint="@string/enter_label"
+                android:inputType="text" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/name"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <CheckBox
+                android:id="@+id/field_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/is_this_field_required" />
 
-        <EditText
-            android:id="@+id/field_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_name"
-            android:inputType="text" />
+            <Button
+                android:id="@+id/btn_add_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/add_selected_type" />
+        </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/required"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <CheckBox
-            android:id="@+id/field_required"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/is_this_field_required" />
-
-        <Button
-            android:id="@+id/btn_add_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/add_field" />
-    </LinearLayout>
-
-    <LinearLayout
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:orientation="vertical">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_2m"
-            android:src="@android:drawable/ic_menu_revert" />
-    </LinearLayout>
+        android:layout_margin="8dp"
+        android:src="@android:drawable/ic_menu_revert" />
 </FrameLayout>

@@ -2,10 +2,11 @@
 <resources>
     <string-array name="array_types">
         <item>text</item>
-        <item>description</item>
         <item>textarea</item>
-        <item>file</item>
+        <item>description</item>
+        <item>number</item>
         <item>email</item>
+        <item>file</item>
         <item>section</item>
     </string-array>
 </resources>

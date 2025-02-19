@@ -25,8 +25,8 @@ internal class FormAdapter(
     private val filename: String,
     private val form: Form,
     private val viewModel: FormViewModel
-) :
-    RecyclerView.Adapter<FormAdapter.FormViewHolder>() {
+) : RecyclerView.Adapter<FormAdapter.FormViewHolder>() {
+
     private val itemList: MutableList<Any> = mutableListOf()
 
     init {
@@ -64,6 +64,10 @@ internal class FormAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormViewHolder {
         val layout = LinearLayout(parent.context).apply {
             orientation = LinearLayout.VERTICAL
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             setPadding(32, 32, 32, 32)
         }
 
@@ -78,9 +82,7 @@ internal class FormAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class FormViewHolder(private val layout: LinearLayout, private val viewType: Int) :
         RecyclerView.ViewHolder(layout) {
@@ -90,6 +92,10 @@ internal class FormAdapter(
 
             val linearLayoutForField = LinearLayout(layout.context).apply {
                 orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 setPadding(8, 8, 8, 8)
             }
 
@@ -128,12 +134,15 @@ internal class FormAdapter(
             layout.addView(view)
         }
 
-
         fun bindSection(section: Section) {
             layout.removeAllViews()
 
             val linearLayoutForSection = LinearLayout(layout.context).apply {
                 orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 setPadding(8, 8, 8, 8)
             }
 
@@ -164,7 +173,6 @@ internal class FormAdapter(
             layout.addView(linearLayoutForSection)
         }
 
-
         private fun createDescriptionView(description: String): TextView {
             return TextView(layout.context).apply {
                 text = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_COMPACT)
@@ -194,12 +202,7 @@ internal class FormAdapter(
                 optionLabels
             )
             spinner.adapter = adapter
-            spinner.setSelection(
-                viewModel.getDropdownValue(
-                    filename = filename,
-                    fieldId = field.uuid
-                )
-            )
+            spinner.setSelection(viewModel.getDropdownValue(filename, field.uuid))
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -208,11 +211,7 @@ internal class FormAdapter(
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.saveDropdownValue(
-                        filename = filename,
-                        fieldId = field.uuid,
-                        selectedIndex = position
-                    )
+                    viewModel.saveDropdownValue(filename, field.uuid, position)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -222,15 +221,15 @@ internal class FormAdapter(
         }
 
         private fun createNumberInput(field: Field): EditText {
-            val inputValue =
-                viewModel.getIntInputValue(filename = filename, fieldId = field.uuid)
-                    .takeIf { it != 0 }?.toString() ?: ""
+            val inputValue = viewModel.getIntInputValue(filename, field.uuid)
+                .takeIf { it != 0 }?.toString() ?: ""
+
             return EditText(layout.context).apply {
                 inputType = InputType.TYPE_CLASS_NUMBER
                 hint = field.label
                 setText(inputValue)
                 setPadding(16, 16, 16, 16)
-                setBackgroundResource(android.R.drawable.edit_text)
+                setBackgroundResource(R.drawable.edit_text)
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -240,22 +239,21 @@ internal class FormAdapter(
 
                 addTextChangedListener { editable ->
                     editable.toString().toIntOrNull()?.let { value ->
-                        viewModel.saveIntInputValue(
-                            filename = filename,
-                            fieldId = field.uuid,
-                            value = value
-                        )
+                        viewModel.saveIntInputValue(filename, field.uuid, value)
                     }
                 }
             }
         }
 
         private fun createTextInput(field: Field): EditText {
+            val inputValue = viewModel.getInputValue(filename, field.uuid) ?: ""
+
             return EditText(layout.context).apply {
+                inputType = InputType.TYPE_CLASS_TEXT
                 hint = field.label
-                setText(viewModel.getInputValue(filename = filename, fieldId = field.uuid))
+                setText(inputValue)
                 setPadding(16, 16, 16, 16)
-                setBackgroundResource(android.R.drawable.edit_text)
+                setBackgroundResource(R.drawable.edit_text)
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -264,33 +262,22 @@ internal class FormAdapter(
                 }
 
                 addTextChangedListener { editable ->
-                    viewModel.saveInputValue(
-                        filename = filename,
-                        fieldId = field.uuid,
-                        value = editable.toString()
-                    )
+                    viewModel.saveInputValue(filename, field.uuid, editable.toString())
                 }
             }
         }
 
+
         private fun buttonRemoveItem(field: Field? = null, section: Section? = null): ImageButton {
             return ImageButton(layout.context).apply {
-                layoutParams = LinearLayout.LayoutParams(48, 48).apply {
-                    marginStart = 16
-                }
                 setImageResource(R.drawable.ic_delete)
                 setColorFilter(0xFF888888.toInt())
                 setOnClickListener {
-                    viewModel.removeFieldToFormInCache(
-                        filename = filename,
-                        removeField = field,
-                        removeSection = section
-                    )
+                    viewModel.removeFieldToFormInCache(filename, field, section)
                 }
             }
         }
     }
-
 
     private companion object {
         const val TYPE_DESCRIPTION = 0
