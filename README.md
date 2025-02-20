@@ -19,3 +19,8 @@ This app allows users to interact with two types of forms, add and remove input 
 Check out the video below to see the app's functionality in action:
 https://github.com/user-attachments/assets/d61fa4b1-59d4-4768-84b3-099a2437a4eb
 
+### Unit Tests
+Unit tests have been written to ensure the app's functionality works as expected, including tests for:
+- Adding and removing form fields.
+- Saving and retrieving input values.
+- Serialization and deserialization of data.
