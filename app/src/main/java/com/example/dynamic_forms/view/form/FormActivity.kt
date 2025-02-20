@@ -67,7 +67,7 @@ class FormActivity : AppCompatActivity() {
     }
 
     private fun setupTitle() {
-        title.text = "Form selected ${formSelected}"
+        title.text = getString(R.string.form_selected, formSelected)
     }
 
     private fun setupObservers() {

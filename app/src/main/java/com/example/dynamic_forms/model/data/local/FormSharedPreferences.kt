@@ -52,5 +52,4 @@ internal class FormSharedPreferences(context: Context) : FormPreferences {
         keysToRemove.forEach { editor.remove(it) }
         editor.apply()
     }
-
 }

@@ -21,4 +21,5 @@
     <string name="label_1">Label 1</string>
     <string name="select_one_type">Select one type</string>
     <string name="add_selected_type">Add selected type</string>
+    <string name="form_selected">Form selected %1$s</string>
 </resources>
